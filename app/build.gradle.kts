@@ -76,5 +76,8 @@ dependencies {
 
     implementation("com.google.dagger:hilt-android:2.56.2")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
     kapt("com.google.dagger:hilt-compiler:2.56.2") // or ksp("com.google.dagger:hilt-compiler:2.56.2")
 }
