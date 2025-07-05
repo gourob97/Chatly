@@ -24,16 +24,11 @@ enum class AuthScreenType {
     LOGIN
 }
 
-@Composable
-fun AuthScreen(screenType: AuthScreenType) {
-    when (screenType) {
-        AuthScreenType.REGISTRATION -> RegistrationScreen()
-        AuthScreenType.LOGIN -> LoginScreen()
-    }
-}
 
 @Composable
-fun RegistrationScreen() {
+fun RegistrationScreen(
+    onRegister: () -> Unit
+) {
     Column(
         modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -75,7 +70,7 @@ fun RegistrationScreen() {
 
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = {}
+                onClick = onRegister
             ) {
                 Text("Register")
             }
@@ -133,6 +128,6 @@ fun LoginScreen() {
 @Preview(showBackground = true)
 @Composable
 private fun DefaultPreview() {
-    AuthScreen(screenType = AuthScreenType.LOGIN)
+//    AuthScreen(screenType = AuthScreenType.LOGIN)
     //AuthScreen(screenType = AuthScreenType.REGISTRATION)
 }
