@@ -3,6 +3,9 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     kotlin("plugin.serialization") version "2.0.21"
+    id("kotlin-android")
+    id("kotlin-kapt") // or id("com.google.devtools.ksp") if using KSP
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -27,6 +30,10 @@ android {
                 "proguard-rules.pro"
             )
         }
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+                targetCompatibility = JavaVersion.VERSION_1_8
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -67,4 +74,7 @@ dependencies {
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
 
+    implementation("com.google.dagger:hilt-android:2.56.2")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+    kapt("com.google.dagger:hilt-compiler:2.56.2") // or ksp("com.google.dagger:hilt-compiler:2.56.2")
 }
