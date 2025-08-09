@@ -16,7 +16,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.gourob.chatly.core.ui.UiState
 import com.gourob.chatly.core.ui.UiStateManager
 import com.gourob.chatly.navigation.Navigation
