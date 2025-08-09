@@ -19,12 +19,6 @@ import com.gourob.chatly.feature.auth.AuthenticationViewModel
 fun HomeScreen(
     viewModel: AuthenticationViewModel
 ) {
-    // Add logging to confirm we reached the home screen
-    androidx.compose.runtime.LaunchedEffect(Unit) {
-        println("HomeScreen - Successfully navigated to HomeScreen!")
-        println("HomeScreen - User is authenticated and on home screen")
-    }
-    
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -37,7 +31,6 @@ fun HomeScreen(
         Spacer(modifier = Modifier.height(32.dp))
 
         Button(onClick = {
-            println("HomeScreen - Logout button clicked")
             viewModel.logout()
         }) {
             Text("Logout")

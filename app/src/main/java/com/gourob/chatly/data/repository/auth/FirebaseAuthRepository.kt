@@ -17,10 +17,7 @@ class FirebaseAuthRepository @Inject constructor(
     override val currentUser: StateFlow<FirebaseUser?> = _currentUser.asStateFlow()
 
     private val authStateListener = FirebaseAuth.AuthStateListener { auth ->
-        println("FirebaseAuthRepository - Auth state changed: ${auth.currentUser}")
-        println("FirebaseAuthRepository - Setting _currentUser.value to: ${auth.currentUser}")
         _currentUser.value = auth.currentUser
-        println("FirebaseAuthRepository - _currentUser.value is now: ${_currentUser.value}")
     }
 
     init {

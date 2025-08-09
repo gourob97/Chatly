@@ -40,17 +40,10 @@ constructor(
     val isAuthenticated: StateFlow<Boolean> =
             authRepository
                     .currentUser
-                    .map { user ->
-                        println("AuthViewModel - currentUser changed: $user")
-                        val isAuth = user != null
-                        println("AuthViewModel - isAuthenticated will be: $isAuth")
-                        isAuth
-                    }
+                    .map { user -> user != null }
                     .stateIn(
                             scope = viewModelScope,
-                            started =
-                                    SharingStarted
-                                            .Eagerly, // Changed to Eagerly to start immediately
+                            started = SharingStarted.Eagerly,
                             initialValue = authRepository.currentUser.value != null
                     )
 
@@ -76,14 +69,12 @@ constructor(
     }
 
     fun login() {
-        println("AuthViewModel - Login function called")
         executeWithLoading(
                 uiStateManager = uiStateManager,
                 loadingMessage =
                         if (uiState.authScreenType == AuthScreenType.LOGIN) "Signing in..."
                         else "Creating account...",
                 onError = { throwable ->
-                    println("AuthViewModel - Login error: ${throwable.localizedMessage}")
                     when {
                         throwable.localizedMessage?.contains("network", ignoreCase = true) ==
                                 true -> "Network error. Please check your connection."
@@ -95,23 +86,15 @@ constructor(
                                         ?: "Authentication failed. Please try again."
                     }
                 },
-                onSuccess = {
-                    println("AuthViewModel - Login success callback")
-                    // Don't show success message immediately - let navigation happen first
-                    null
-                }
+                onSuccess = { null }
         ) {
-            println("AuthViewModel - Executing login logic")
             // Clear any previous error state
             uiState = uiState.copy(errorMessage = null)
 
             val result = authRepository.login(uiState.email.trim(), uiState.password.trim())
-            println("AuthViewModel - Login result: $result")
 
             if (result.isSuccess) {
-                println("AuthViewModel - Login successful, setting isLoginSuccess = true")
                 uiState = uiState.copy(isLoginSuccess = true)
-                println("AuthViewModel - uiState.isLoginSuccess is now: ${uiState.isLoginSuccess}")
                 result
             } else {
                 // Update local state for any UI-specific error handling
@@ -190,23 +173,5 @@ constructor(
         uiState = ChatlyLoginUiState()
     }
 
-    // Debug function to check current auth state
-    fun checkAuthState() {
-        println("AuthViewModel - Manual auth check:")
-        println(
-                "AuthViewModel - authRepository.currentUser.value: ${authRepository.currentUser.value}"
-        )
-        println("AuthViewModel - isAuthenticated.value: ${isAuthenticated.value}")
-    }
 
-    // Function to clear all UI states (useful for debugging)
-    fun clearAllStates() {
-        println("AuthViewModel - Clearing all UI states")
-        uiStateManager.reset()
-        uiState = uiState.copy(
-            isLoading = false,
-            errorMessage = null,
-            isLoginSuccess = false
-        )
-    }
 }

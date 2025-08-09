@@ -27,23 +27,12 @@ import com.gourob.chatly.ui.theme.ChatlyTheme
 fun AuthScreen(
     viewModel: AuthenticationViewModel
 ) {
-    // Add logging to confirm we're on the auth screen
-    androidx.compose.runtime.LaunchedEffect(Unit) {
-        println("AuthScreen - Composing AuthScreen")
-    }
-    
     val isLogin = viewModel.uiState.authScreenType == AuthScreenType.LOGIN
     AuthScreenContent(
         isLogin = isLogin,
         uiState = viewModel.uiState,
-        onLogin = { 
-            println("AuthScreen - Login button clicked")
-            viewModel.login() 
-        },
-        onSignUp = { 
-            println("AuthScreen - SignUp button clicked")
-            viewModel.signup() 
-        },
+        onLogin = { viewModel.login() },
+        onSignUp = { viewModel.signup() },
         onEmailChange = { viewModel.onEmailChange(it) },
         onPasswordChange = { viewModel.onPasswordChange(it) },
         onToggleLogin = viewModel::toggleAuthScreen

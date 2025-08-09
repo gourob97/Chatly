@@ -26,10 +26,7 @@ fun Navigation(
     
     // Handle navigation based on authentication state
     LaunchedEffect(isAuthenticated) {
-        println("Navigation - isAuthenticated changed to: $isAuthenticated")
-        
         if (isAuthenticated) {
-            println("Navigation - User is authenticated, navigating to HomeScreen")
             navController.navigate(HomeScreen) {
                 popUpTo(LoginScreen) { inclusive = true }
             }
@@ -45,7 +42,6 @@ fun Navigation(
                 authViewModel.resetLoginSuccess()
             }
         } else {
-            println("Navigation - User is not authenticated, navigating to LoginScreen")
             navController.navigate(LoginScreen) {
                 popUpTo(HomeScreen) { inclusive = true }
             }
@@ -58,12 +54,10 @@ fun Navigation(
         modifier = modifier
     ) {
         composable<LoginScreen> {
-            println("Navigation - Composing LoginScreen")
             AuthScreen(viewModel = authViewModel)
         }
 
         composable<HomeScreen> {
-            println("Navigation - Composing HomeScreen")
             HomeScreen(viewModel = authViewModel)
         }
     }
