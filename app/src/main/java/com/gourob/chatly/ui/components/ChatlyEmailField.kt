@@ -15,6 +15,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.gourob.chatly.ui.theme.ChatlyTextStyles
 import com.gourob.chatly.ui.theme.ChatlyTheme
 
 @Composable
@@ -27,7 +28,8 @@ fun ChatlyEmailField(
     OutlinedTextField(
         value = text,
         onValueChange = onTextChange,
-        label = { Text(label) },
+        label = { Text(label, style = ChatlyTextStyles.inputLabel) },
+        textStyle = ChatlyTextStyles.inputText,
         modifier = modifier.fillMaxWidth(),
         keyboardOptions = KeyboardOptions.Default.copy(
             capitalization = KeyboardCapitalization.None,

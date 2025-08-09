@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.gourob.chatly.ui.components.ChatlyEmailField
 import com.gourob.chatly.ui.components.ChatlyPasswordField
 import com.gourob.chatly.ui.components.buttons.ChatlyPrimaryButton
+import com.gourob.chatly.ui.theme.ChatlyTextStyles
 import com.gourob.chatly.ui.theme.ChatlyTheme
 
 @Composable
@@ -57,7 +58,10 @@ fun AuthScreenContent(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(if (isLogin) "Sign in" else "Sign up")
+        Text(
+            text = if (isLogin) "Sign in" else "Sign up",
+            style = ChatlyTextStyles.screenTitle
+        )
 
         Spacer(Modifier.height(5.dp))
 
@@ -88,9 +92,9 @@ fun AuthScreenContent(
             Spacer(Modifier.height(5.dp))
 
             Text(
-                if (isLogin) "Don't have an account? Sign up"
+                text = if (isLogin) "Don't have an account? Sign up"
                 else "Already have an account? Sign in",
-
+                style = ChatlyTextStyles.linkText,
                 modifier = Modifier.clickable {
                     onToggleLogin()
                 }

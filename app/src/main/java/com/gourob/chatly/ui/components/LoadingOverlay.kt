@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.gourob.chatly.ui.theme.ChatlyTextStyles
 import com.gourob.chatly.ui.theme.ChatlyTheme
 
 @Composable
@@ -51,7 +52,7 @@ fun LoadingOverlay(
 
             Text(
                 text = message,
-                style = MaterialTheme.typography.bodyMedium,
+                style = ChatlyTextStyles.loadingText,
                 color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center
             )

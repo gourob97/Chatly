@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.gourob.chatly.feature.auth.AuthenticationViewModel
+import com.gourob.chatly.ui.theme.ChatlyTextStyles
 
 @Composable
 fun HomeScreen(
@@ -26,14 +27,14 @@ fun HomeScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Welcome to Chatly!", style = MaterialTheme.typography.headlineMedium)
+        Text("Welcome to Chatly!", style = ChatlyTextStyles.appTitle)
 
         Spacer(modifier = Modifier.height(32.dp))
 
         Button(onClick = {
             viewModel.logout()
         }) {
-            Text("Logout")
+            Text("Logout", style = ChatlyTextStyles.buttonText)
         }
     }
 }

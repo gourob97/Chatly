@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.gourob.chatly.ui.components.ChatlyPreviewsAllCombinations
+import com.gourob.chatly.ui.theme.ChatlyTextStyles
 
 @Composable
 fun ChatlyPrimaryButton(
@@ -18,7 +19,7 @@ fun ChatlyPrimaryButton(
         onClick = onClick,
         modifier = modifier.fillMaxWidth()
     ) {
-        Text(text)
+        Text(text, style = ChatlyTextStyles.buttonText)
     }
 }
 

@@ -19,6 +19,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.gourob.chatly.R.drawable
+import com.gourob.chatly.ui.theme.ChatlyTextStyles
 import com.gourob.chatly.ui.theme.ChatlyTheme
 
 @Composable
@@ -33,7 +34,8 @@ fun ChatlyPasswordField(
     OutlinedTextField(
         value = text,
         onValueChange = onTextChange,
-        label = { Text(label) },
+        label = { Text(label, style = ChatlyTextStyles.inputLabel) },
+        textStyle = ChatlyTextStyles.inputText,
         modifier = modifier.fillMaxWidth(),
         keyboardOptions = KeyboardOptions.Default.copy(
             capitalization = KeyboardCapitalization.None,
