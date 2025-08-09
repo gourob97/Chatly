@@ -1,69 +1,70 @@
 package com.gourob.chatly.navigation
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.gourob.chatly.LoginScreen
-import com.gourob.chatly.RegistrationScreen
-import com.gourob.chatly.ui.viewmodel.RegistrationViewModel
-import dagger.hilt.android.EntryPointAccessors
-import kotlinx.serialization.Serializable
+import com.gourob.chatly.feature.auth.AuthScreen
+import com.gourob.chatly.feature.auth.AuthScreenType
+import com.gourob.chatly.feature.auth.AuthenticationViewModel
+import com.gourob.chatly.feature.home.HomeScreen
 
 @Composable
 fun Navigation(
     modifier: Modifier = Modifier,
 ) {
     val navController = rememberNavController()
-    Log.d("Navigation", "NavController created: $navController")
-
-    // Get the AppNavigatorImpl from Hilt and set the NavController
-    LaunchedEffect(navController) {
-        try {
-            Log.d("Navigation", "LaunchedEffect triggered, setting up AppNavigator")
-            val context = navController.context
-            Log.d("Navigation", "Context: $context")
+    val authViewModel: AuthenticationViewModel = hiltViewModel()
+    
+    // Observe authentication state and handle navigation
+    val isAuthenticated by authViewModel.isAuthenticated.collectAsStateWithLifecycle()
+    
+    // Handle navigation based on authentication state
+    LaunchedEffect(isAuthenticated) {
+        println("Navigation - isAuthenticated changed to: $isAuthenticated")
+        
+        if (isAuthenticated) {
+            println("Navigation - User is authenticated, navigating to HomeScreen")
+            navController.navigate(HomeScreen) {
+                popUpTo(LoginScreen) { inclusive = true }
+            }
             
-            val entryPoint = EntryPointAccessors.fromApplication(
-                context.applicationContext,
-                NavigatorEntryPoint::class.java
-            )
-            Log.d("Navigation", "EntryPoint created: $entryPoint")
-            
-            val appNavigator = entryPoint.appNavigator()
-            Log.d("Navigation", "AppNavigator retrieved: $appNavigator")
-            
-            appNavigator.setNavController(navController)
-            Log.d("Navigation", "NavController set successfully")
-        } catch (e: Exception) {
-            Log.e("Navigation", "Error setting up AppNavigator", e)
+            // Show welcome message if user just logged in
+            if (authViewModel.uiState.isLoginSuccess) {
+                val message = if (authViewModel.uiState.authScreenType == AuthScreenType.LOGIN) {
+                    "Welcome back!"
+                } else {
+                    "Account created successfully! Welcome!"
+                }
+                authViewModel.showMessage(message, isError = false)
+                authViewModel.resetLoginSuccess()
+            }
+        } else {
+            println("Navigation - User is not authenticated, navigating to LoginScreen")
+            navController.navigate(LoginScreen) {
+                popUpTo(HomeScreen) { inclusive = true }
+            }
         }
     }
 
     NavHost(
         navController = navController,
-        startDestination = RegistrationRoute,
+        startDestination = LoginScreen,
         modifier = modifier
     ) {
-        composable<RegistrationRoute>{
-            val viewModel: RegistrationViewModel = hiltViewModel()
-            RegistrationScreen(
-                viewModel = viewModel
-            )
+        composable<LoginScreen> {
+            println("Navigation - Composing LoginScreen")
+            AuthScreen(viewModel = authViewModel)
         }
 
-        composable<LoginRoute> {
-            LoginScreen()
+        composable<HomeScreen> {
+            println("Navigation - Composing HomeScreen")
+            HomeScreen(viewModel = authViewModel)
         }
     }
 }
-
-@Serializable
-object RegistrationRoute
-
-@Serializable
-object LoginRoute

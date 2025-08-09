@@ -6,6 +6,7 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt") // or id("com.google.devtools.ksp") if using KSP
     id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -80,4 +81,8 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
     kapt("com.google.dagger:hilt-compiler:2.56.2") // or ksp("com.google.dagger:hilt-compiler:2.56.2")
+
+
+    implementation(platform("com.google.firebase:firebase-bom:34.0.0"))
+    implementation("com.google.firebase:firebase-auth")
 }

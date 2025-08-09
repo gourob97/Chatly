@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "727695340385",
+    "project_id": "chatly-2405b",
+    "storage_bucket": "chatly-2405b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:727695340385:android:1b5bb6e8404aa6be1d8b20",
+        "android_client_info": {
+          "package_name": "com.gourob.chatly"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzXRw9Th4p3NI3ED1vy1n_0nTRvgJxx9Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
