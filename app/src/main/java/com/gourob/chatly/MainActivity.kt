@@ -15,6 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.gourob.chatly.core.ui.UiState
 import com.gourob.chatly.core.ui.UiStateManager
@@ -58,31 +59,27 @@ class MainActivity : ComponentActivity() {
                     }
                 }
                 
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    snackbarHost = {
-                        SnackbarHost(
-                            hostState = snackbarHostState,
-                            snackbar = { snackbarData ->
-                                ChatlySnackbar(
-                                    snackbarData = snackbarData,
-                                    snackbarType = snackbarMessage?.type ?: com.gourob.chatly.core.ui.SnackbarType.INFO
-                                )
-                            }
-                        )
-                    }
-                ) { innerPadding ->
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        Navigation(
-                            modifier = Modifier.padding(innerPadding)
-                        )
-                        
-                        // Show loading overlay when loading
-                        if (uiState is UiState.Loading) {
-                            LoadingOverlay(
-                                message = (uiState as UiState.Loading).message
+                Box(modifier = Modifier.fillMaxSize()) {
+                    // Navigation without padding for true edge-to-edge
+                    Navigation(modifier = Modifier.fillMaxSize())
+                    
+                    // Snackbar host positioned at bottom
+                    SnackbarHost(
+                        hostState = snackbarHostState,
+                        modifier = Modifier.align(androidx.compose.ui.Alignment.BottomCenter),
+                        snackbar = { snackbarData ->
+                            ChatlySnackbar(
+                                snackbarData = snackbarData,
+                                snackbarType = snackbarMessage?.type ?: com.gourob.chatly.core.ui.SnackbarType.INFO
                             )
                         }
+                    )
+                    
+                    // Show loading overlay when loading
+                    if (uiState is UiState.Loading) {
+                        LoadingOverlay(
+                            message = (uiState as UiState.Loading).message
+                        )
                     }
                 }
             }
