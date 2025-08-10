@@ -28,10 +28,10 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    
+
     @Inject
     lateinit var uiStateManager: UiStateManager
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
                 val snackbarHostState = remember { SnackbarHostState() }
                 val uiState by uiStateManager.uiState.collectAsState()
                 val snackbarMessage by uiStateManager.snackbarMessage.collectAsState()
-                
+
                 // Handle snackbar messages
                 LaunchedEffect(snackbarMessage) {
                     snackbarMessage?.let { message ->
@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
                             com.gourob.chatly.core.ui.SnackbarDuration.LONG -> SnackbarDuration.Long
                             com.gourob.chatly.core.ui.SnackbarDuration.INDEFINITE -> SnackbarDuration.Indefinite
                         }
-                        
+
                         snackbarHostState.showSnackbar(
                             message = message.message,
                             actionLabel = message.actionLabel,
@@ -58,23 +58,30 @@ class MainActivity : ComponentActivity() {
                         uiStateManager.clearSnackbar()
                     }
                 }
-                
-                Box(modifier = Modifier.fillMaxSize()) {
+
+                Scaffold { paddingValues ->
                     // Navigation without padding for true edge-to-edge
-                    Navigation(modifier = Modifier.fillMaxSize())
-                    
+                    Navigation(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(
+                                top = paddingValues.calculateTopPadding()
+                            ),
+                    )
+
                     // Snackbar host positioned at bottom
                     SnackbarHost(
                         hostState = snackbarHostState,
-                        modifier = Modifier.align(androidx.compose.ui.Alignment.BottomCenter),
+                        //modifier = Modifier.align(androidx.compose.ui.Alignment.BottomCenter),
                         snackbar = { snackbarData ->
                             ChatlySnackbar(
                                 snackbarData = snackbarData,
-                                snackbarType = snackbarMessage?.type ?: com.gourob.chatly.core.ui.SnackbarType.INFO
+                                snackbarType = snackbarMessage?.type
+                                    ?: com.gourob.chatly.core.ui.SnackbarType.INFO
                             )
                         }
                     )
-                    
+
                     // Show loading overlay when loading
                     if (uiState is UiState.Loading) {
                         LoadingOverlay(

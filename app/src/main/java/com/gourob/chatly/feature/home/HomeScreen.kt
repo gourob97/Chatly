@@ -49,6 +49,28 @@ fun HomeScreen(
     val username = "Gourob"
     
     Scaffold(
+        topBar = {
+            when (selectedTab) {
+            0 -> {
+                ChatlyAppBar(
+                    title = username,
+                    showProfileIcon = true
+                )
+            }
+            1 -> {
+                ChatlyAppBar(
+                    title = "People",
+                    showProfileIcon = false
+                )
+            }
+            2 -> {
+                ChatlyAppBar(
+                    title = "Profile",
+                    showProfileIcon = false
+                )
+            }
+        }
+        },
         bottomBar = {
             NavigationBar {
                 NavigationBarItem(
@@ -107,32 +129,13 @@ private fun ChatsTab(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .windowInsetsPadding(WindowInsets.systemBars)
-            .padding(16.dp)
+            //.windowInsetsPadding(WindowInsets.systemBars)
     ) {
-        // Header with profile icon and username
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = Icons.Default.AccountCircle,
-                contentDescription = "Profile",
-                modifier = Modifier.size(32.dp),
-                tint = MaterialTheme.colorScheme.primary
-            )
-            Spacer(modifier = Modifier.width(12.dp))
-            Text(
-                text = username,
-                style = ChatlyTextStyles.screenTitle
-            )
-        }
-        
-        Spacer(modifier = Modifier.height(24.dp))
-        
-        // Empty state
+        // Content area
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp),
             contentAlignment = Alignment.Center
         ) {
             Column(
@@ -157,27 +160,41 @@ private fun ChatsTab(
 private fun PeopleTab(
     modifier: Modifier = Modifier
 ) {
-    Box(
+    Column(
         modifier = modifier
             .fillMaxSize()
-            .windowInsetsPadding(WindowInsets.systemBars),
-        contentAlignment = Alignment.Center
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+        // App bar-like header
+
+        Spacer(Modifier.weight(1f))
+
+        
+        // Content area
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp),
+            contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = "Contacts coming soon",
-                style = ChatlyTextStyles.sectionHeader
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = "Find and connect with friends",
-                style = ChatlyTextStyles.bodyText,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "Contacts coming soon",
+                    style = ChatlyTextStyles.sectionHeader
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "Find and connect with friends",
+                    style = ChatlyTextStyles.bodyText,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
         }
+        Spacer(Modifier.weight(1f))
+
     }
+
 }
 
 @Composable
@@ -190,45 +207,86 @@ private fun ProfileTab(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .windowInsetsPadding(WindowInsets.systemBars)
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(32.dp))
-        
-        // Profile icon
-        Icon(
-            imageVector = Icons.Default.AccountCircle,
-            contentDescription = "Profile Picture",
-            modifier = Modifier.size(80.dp),
-            tint = MaterialTheme.colorScheme.primary
-        )
-        
-        Spacer(modifier = Modifier.height(16.dp))
-        
-        // Username
-        Text(
-            text = username,
-            style = ChatlyTextStyles.screenTitle
-        )
-        
-        Spacer(modifier = Modifier.height(8.dp))
-        
-        // Email
-        Text(
-            text = userEmail,
-            style = ChatlyTextStyles.bodyText,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        
-        Spacer(modifier = Modifier.height(48.dp))
-        
-        // Logout button
-        Button(
-            onClick = onLogout
+        // App bar-like header
+
+
+        Spacer(Modifier.weight(1f))
+
+        // Content area
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Logout", style = ChatlyTextStyles.buttonText)
+            Spacer(modifier = Modifier.height(32.dp))
+            
+            // Profile icon
+            Icon(
+                imageVector = Icons.Default.AccountCircle,
+                contentDescription = "Profile Picture",
+                modifier = Modifier.size(80.dp),
+                tint = MaterialTheme.colorScheme.primary
+            )
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            // Username
+            Text(
+                text = username,
+                style = ChatlyTextStyles.screenTitle
+            )
+            
+            Spacer(modifier = Modifier.height(8.dp))
+            
+            // Email
+            Text(
+                text = userEmail,
+                style = ChatlyTextStyles.bodyText,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            
+            Spacer(modifier = Modifier.height(48.dp))
+            
+            // Logout button
+            Button(
+                onClick = onLogout
+            ) {
+                Text("Logout", style = ChatlyTextStyles.buttonText)
+            }
         }
+        Spacer(Modifier.weight(1f))
+        
     }
 }
 
+@Composable
+private fun ChatlyAppBar(
+    title: String,
+    showProfileIcon: Boolean,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        if (showProfileIcon) {
+            Icon(
+                imageVector = Icons.Default.AccountCircle,
+                contentDescription = "Profile",
+                modifier = Modifier.size(32.dp),
+                tint = MaterialTheme.colorScheme.primary
+            )
+            Spacer(modifier = Modifier.width(12.dp))
+        }
+        
+        Text(
+            text = title,
+            style = ChatlyTextStyles.screenTitle,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+    }
+}
