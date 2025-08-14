@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -15,7 +14,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.gourob.chatly.core.ui.UiState
 import com.gourob.chatly.core.ui.UiStateManager
@@ -29,8 +27,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    @Inject
-    lateinit var uiStateManager: UiStateManager
+    @Inject lateinit var uiStateManager: UiStateManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,49 +41,50 @@ class MainActivity : ComponentActivity() {
                 // Handle snackbar messages
                 LaunchedEffect(snackbarMessage) {
                     snackbarMessage?.let { message ->
-                        val duration = when (message.duration) {
-                            com.gourob.chatly.core.ui.SnackbarDuration.SHORT -> SnackbarDuration.Short
-                            com.gourob.chatly.core.ui.SnackbarDuration.LONG -> SnackbarDuration.Long
-                            com.gourob.chatly.core.ui.SnackbarDuration.INDEFINITE -> SnackbarDuration.Indefinite
-                        }
+                        val duration =
+                                when (message.duration) {
+                                    com.gourob.chatly.core.ui.SnackbarDuration.SHORT ->
+                                            SnackbarDuration.Short
+                                    com.gourob.chatly.core.ui.SnackbarDuration.LONG ->
+                                            SnackbarDuration.Long
+                                    com.gourob.chatly.core.ui.SnackbarDuration.INDEFINITE ->
+                                            SnackbarDuration.Indefinite
+                                }
 
                         snackbarHostState.showSnackbar(
-                            message = message.message,
-                            actionLabel = message.actionLabel,
-                            duration = duration
+                                message = message.message,
+                                actionLabel = message.actionLabel,
+                                duration = duration
                         )
                         uiStateManager.clearSnackbar()
                     }
                 }
 
-                Scaffold { paddingValues ->
-                    // Navigation without padding for true edge-to-edge
-                    Navigation(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(
-                                top = paddingValues.calculateTopPadding()
-                            ),
-                    )
-
-                    // Snackbar host positioned at bottom
-                    SnackbarHost(
-                        hostState = snackbarHostState,
-                        //modifier = Modifier.align(androidx.compose.ui.Alignment.BottomCenter),
-                        snackbar = { snackbarData ->
-                            ChatlySnackbar(
-                                snackbarData = snackbarData,
-                                snackbarType = snackbarMessage?.type
-                                    ?: com.gourob.chatly.core.ui.SnackbarType.INFO
+                Scaffold(
+                        snackbarHost = {
+                            SnackbarHost(
+                                    hostState = snackbarHostState,
+                                    snackbar = { snackbarData ->
+                                        ChatlySnackbar(
+                                                snackbarData = snackbarData,
+                                                snackbarType = snackbarMessage?.type
+                                                                ?: com.gourob.chatly.core.ui
+                                                                        .SnackbarType.INFO
+                                        )
+                                    }
                             )
                         }
+                ) { paddingValues ->
+                    // Navigation without padding for true edge-to-edge
+                    Navigation(
+                            modifier =
+                                    Modifier.fillMaxSize()
+                                            .padding(top = paddingValues.calculateTopPadding()),
                     )
 
                     // Show loading overlay when loading
                     if (uiState is UiState.Loading) {
-                        LoadingOverlay(
-                            message = (uiState as UiState.Loading).message
-                        )
+                        LoadingOverlay(message = (uiState as UiState.Loading).message)
                     }
                 }
             }
